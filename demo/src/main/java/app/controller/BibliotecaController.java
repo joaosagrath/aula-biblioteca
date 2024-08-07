@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import app.entity.Biblioteca;
 import app.service.BibliotecaService;
-import entity.Biblioteca;
 
 @RestController
 @RequestMapping("/api/biblioteca")

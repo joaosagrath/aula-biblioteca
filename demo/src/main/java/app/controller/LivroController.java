@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import app.entity.Livro;
 import app.service.LivroService;
-import entity.Livro;
 
 @RestController
 @RequestMapping("/api/livro")

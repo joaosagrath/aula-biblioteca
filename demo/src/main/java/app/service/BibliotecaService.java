@@ -1,59 +1,51 @@
 package app.service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import entity.Biblioteca;
+import app.entity.Biblioteca;
+import app.repository.BibliotecaRepository;
 
 @Service
 public class BibliotecaService {
+	
+	@Autowired
+	private BibliotecaRepository bibliotecaRepository;
+	
 
 	public String save (Biblioteca biblioteca) {
-		return "Carro cadastrado com sucesso";
+		this.bibliotecaRepository.save(biblioteca);
+		return "Biblioteca cadastrado com sucesso";
 	}
 	
 	public String update (Biblioteca biblioteca, long id) {
+		biblioteca.setId(id);
+		this.bibliotecaRepository.save(biblioteca);
 		return "Atualizado com sucesso";
 	}
 	
 	public Biblioteca findById (long id) {
 		
-		List<Biblioteca> listaTemp = this.findAll();
-		
-		for (int i = 0; i < listaTemp.size(); i++) {
-			if(listaTemp.get(i).getId() == id) {
-				return listaTemp.get(i);
-			}
-		}
-		
-		return null;
+		Optional<Biblioteca> optional = this.bibliotecaRepository.findById(id);
+		if(optional.isPresent()) {
+			return optional.get();
+		}else
+			return null;
 		
 	}
 	
 	public List<Biblioteca> findAll () {
 		
-		List<Biblioteca> lista = new ArrayList<>();
-		lista.add(new Biblioteca(1,"Gol", "VW"));
-		lista.add(new Biblioteca(2,"Gol 2", "VW"));
-		lista.add(new Biblioteca(3,"Gol 3", "VW"));
-		lista.add(new Biblioteca(4,"Gol 4", "VW"));
+		return this.bibliotecaRepository.findAll();
 		
-		return lista;
 	}
 	
 	public String delete (long id) {
-		
-		List<Biblioteca> listaTemp = this.findAll();
-		
-		for (int i = 0; i < listaTemp.size(); i++) {
-			if(listaTemp.get(i).getId() == id) {
-				return "deletado com sucesso";
-			}
-		}
-		return "Veículo não encontrado";
+		this.bibliotecaRepository.deleteById(id);
+		return "Veículo deletado com sucesso!";
 	}
 	
 }
-

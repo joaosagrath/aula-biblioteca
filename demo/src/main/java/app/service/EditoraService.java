@@ -1,59 +1,51 @@
 package app.service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import entity.Editora;
+import app.entity.Editora;
+import app.repository.EditoraRepository;
 
 @Service
 public class EditoraService {
+	
+	@Autowired
+	private EditoraRepository editoraRepository;
+	
 
 	public String save (Editora editora) {
+		this.editoraRepository.save(editora);
 		return "Editora cadastrado com sucesso";
 	}
 	
 	public String update (Editora editora, long id) {
+		editora.setId(id);
+		this.editoraRepository.save(editora);
 		return "Atualizado com sucesso";
 	}
 	
 	public Editora findById (long id) {
 		
-		List<Editora> listaTemp = this.findAll();
-		
-		for (int i = 0; i < listaTemp.size(); i++) {
-			if(listaTemp.get(i).getId() == id) {
-				return listaTemp.get(i);
-			}
-		}
-		
-		return null;
+		Optional<Editora> optional = this.editoraRepository.findById(id);
+		if(optional.isPresent()) {
+			return optional.get();
+		}else
+			return null;
 		
 	}
 	
 	public List<Editora> findAll () {
 		
-		List<Editora> lista = new ArrayList<>();
-		lista.add(new Editora(1,"Gol", "OK"));
-		lista.add(new Editora(2,"Gol 2","OK"));
-		lista.add(new Editora(3,"Gol 3","OK"));
-		lista.add(new Editora(4,"Gol 4","OK"));
+		return this.editoraRepository.findAll();
 		
-		return lista;
 	}
 	
 	public String delete (long id) {
-		
-		List<Editora> listaTemp = this.findAll();
-		
-		for (int i = 0; i < listaTemp.size(); i++) {
-			if(listaTemp.get(i).getId() == id) {
-				return "deletado com sucesso";
-			}
-		}
-		return "Veículo não encontrado";
+		this.editoraRepository.deleteById(id);
+		return "Veículo deletado com sucesso!";
 	}
 	
 }
-
